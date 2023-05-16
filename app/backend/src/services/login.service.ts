@@ -21,6 +21,12 @@ class LoginService {
     const token = generateToken(user.id);
     return token;
   }
+
+  public static async getByRole(id: number) {
+    const user = await UserModel.findOne({ where: { id } });
+    if (!user) throw new UnauthorizedError('User does not exists');
+    return user.role;
+  }
 }
 
 export default LoginService;
