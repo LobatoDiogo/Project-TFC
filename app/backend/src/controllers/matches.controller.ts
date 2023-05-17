@@ -3,8 +3,10 @@ import MatchesService from '../services/matches.service';
 
 class MatchesController {
   public static async getMatches(req: Request, res: Response) {
-    const matches = await MatchesService.getMatches();
-    return res.json(matches);
+    const { inProgress } = req.query as { inProgress: string };
+    const matches = inProgress ? await MatchesService.matchInProgress(inProgress)
+      : await MatchesService.getMatches();
+    res.status(200).json(matches);
   }
 }
 

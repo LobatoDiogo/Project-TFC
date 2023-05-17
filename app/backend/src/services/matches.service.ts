@@ -22,6 +22,20 @@ class MatchesService {
     });
     return matches;
   }
+
+  //  filtrar somente as partidas em andamento, e também filtrar somente as partidas finalizadas
+  public static async matchInProgress(query: string): Promise<MatchesAtributes[]> {
+    const matches = await MatchesModel.findAll({
+      where: { inProgress: JSON.parse(query) },
+      include:
+        [{
+          model: TeamModel, as: 'homeTeam', attributes: { exclude: ['id'] },
+        },
+        { model: TeamModel, as: 'awayTeam', attributes: { exclude: ['id'] },
+        }],
+    });
+    return matches;
+  }
 }
 
 export default MatchesService;
