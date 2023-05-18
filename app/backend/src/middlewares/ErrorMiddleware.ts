@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import NotFoundError from '../utils/NotFoundError';
 import ValidationError from '../utils/ValidationError';
 import UnauthorizedError from '../utils/UnauthorizedError';
+import UnprocessableEntity from '../utils/UnprocessableEntityError';
 
 class ErrorMiddleware {
   static handleError(error: Error, _req: Request, res: Response, _next: NextFunction) {
@@ -15,6 +16,10 @@ class ErrorMiddleware {
 
     if (error instanceof UnauthorizedError) {
       return res.status(401).json({ message: error.message });
+    }
+
+    if (error instanceof UnprocessableEntity) {
+      return res.status(422).json({ message: error.message });
     }
 
     console.error(error);
