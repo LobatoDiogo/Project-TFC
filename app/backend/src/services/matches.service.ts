@@ -22,7 +22,8 @@ class MatchesService {
         [{
           model: TeamModel, as: 'homeTeam', attributes: { exclude: ['id'] },
         },
-        { model: TeamModel, as: 'awayTeam', attributes: { exclude: ['id'] },
+        {
+          model: TeamModel, as: 'awayTeam', attributes: { exclude: ['id'] },
         }],
     });
     return matches;
@@ -35,6 +36,15 @@ class MatchesService {
       await match.save();
     }
     return match?.toJSON() as MatchesAtributes;
+  }
+
+  public static async updateMatch(id: number, homeTeamGoals: number, awayTeamGoals: number) {
+    const match = await MatchesModel.findByPk(id);
+    if (match) {
+      match.homeTeamGoals = homeTeamGoals;
+      match.awayTeamGoals = awayTeamGoals;
+      match.save();
+    }
   }
 }
 
