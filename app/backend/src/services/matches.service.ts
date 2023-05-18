@@ -6,24 +6,15 @@ class MatchesService {
     const matches = await MatchesModel.findAll({
       include:
         [{
-          model: TeamModel,
-          as: 'homeTeam',
-          attributes: {
-            exclude: ['id'],
-          },
+          model: TeamModel, as: 'homeTeam', attributes: { exclude: ['id'] },
         },
         {
-          model: TeamModel,
-          as: 'awayTeam',
-          attributes: {
-            exclude: ['id'],
-          },
+          model: TeamModel, as: 'awayTeam', attributes: { exclude: ['id'] },
         }],
     });
     return matches;
   }
 
-  //  filtrar somente as partidas em andamento, e também filtrar somente as partidas finalizadas
   public static async matchInProgress(query: string): Promise<MatchesAtributes[]> {
     const matches = await MatchesModel.findAll({
       where: { inProgress: JSON.parse(query) },
@@ -35,6 +26,15 @@ class MatchesService {
         }],
     });
     return matches;
+  }
+
+  public static async finishMatch(id: number): Promise<MatchesAtributes> {
+    const match = await MatchesModel.findByPk(id);
+    if (match) {
+      match.inProgress = false;
+      await match.save();
+    }
+    return match?.toJSON() as MatchesAtributes;
   }
 }
 
