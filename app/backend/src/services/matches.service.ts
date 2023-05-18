@@ -1,6 +1,13 @@
 import TeamModel from '../database/models/team.model';
 import MatchesModel, { MatchesAtributes } from '../database/models/match.model';
 
+export interface INewMatch {
+  homeTeamId: number;
+  awayTeamId: number;
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+}
+
 class MatchesService {
   public static async getMatches(): Promise<MatchesAtributes[]> {
     const matches = await MatchesModel.findAll({
@@ -46,6 +53,13 @@ class MatchesService {
       match.save();
     }
   }
-}
 
+  public static async createMatch(params: INewMatch): Promise<MatchesAtributes> {
+    const match = await MatchesModel.create({
+      ...params,
+      inProgress: true,
+    });
+    return match;
+  }
+}
 export default MatchesService;
