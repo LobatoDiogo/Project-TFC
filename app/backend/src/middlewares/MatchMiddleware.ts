@@ -17,4 +17,5 @@ const verifyMatch = async (req: Request, _res: Response, next: NextFunction) => 
   }
   next();
 };
+
 export default verifyMatch;
