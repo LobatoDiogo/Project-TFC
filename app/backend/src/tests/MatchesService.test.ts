@@ -8,7 +8,8 @@ import chaiHttp = require('chai-http');
 // import { Response } from 'superagent';
 import MatchesModel from '../database/models/match.model';
 import MatchesService from '../services/matches.service';
-import { allMatches } from '../mocks/matches.mock';
+import TeamService from '../services/teams.service';
+import { allMatches, createMatch, matchCreated } from '../mocks/matches.mock';
 // @ts-ignore
 import chaiAsPromised = require('chai-as-promised');
 
@@ -54,7 +55,7 @@ describe('finishMatch', () => {
     expect(saveStub.called).to.be.false;
   });
 
-    describe('Testa findAll', () => {
+  describe('Testa findAll', () => {
     it('Verifica se retorna um array todos os matches', async () => {
       // @ts-ignore
       sinon.stub(MatchesModel, 'findAll').resolves(allMatches as unknown as MatchesModel[]);
@@ -70,6 +71,19 @@ describe('finishMatch', () => {
       const response = await MatchesService.matchInProgress('true');
 
       expect(response).to.be.deep.equal(allMatches);
+    });
+  });
+
+  describe('Testa create', () => {
+    it('Verifica se retorna uma partida criada', async () => {
+      // @ts-ignore
+      sinon.stub(MatchesModel, 'create').resolves(matchCreated);
+      // @ts-ignore
+      sinon.stub(TeamService, 'findById').resolves({});
+
+      const response = await MatchesService.createMatch(createMatch);
+
+      expect(response).to.be.deep.equal(matchCreated);
     });
   });
 });
