@@ -1,5 +1,6 @@
 import TeamModel from '../database/models/team.model';
 import MatchesModel, { MatchesAtributes } from '../database/models/match.model';
+import NotFoundError from '../utils/NotFoundError';
 
 export interface INewMatch {
   homeTeamId: number;
@@ -38,6 +39,9 @@ class MatchesService {
 
   public static async finishMatch(id: number): Promise<MatchesAtributes> {
     const match = await MatchesModel.findByPk(id);
+
+    if (!match) throw new NotFoundError('Match not found');
+
     if (match) {
       match.inProgress = false;
       await match.save();

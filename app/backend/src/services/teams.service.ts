@@ -10,10 +10,8 @@ class TeamService {
 
   public static async findById(id: number): Promise<TeamAtributes> {
     const team = await TeamModel.findOne({ where: { id } });
-
     if (!team) throw new NotFoundError('Team does not exists');
-
-    return team.toJSON();
+    return team;
   }
 }
 
