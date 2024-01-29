@@ -1,4 +1,4 @@
-O Trybe Futebol Clube é um site informativo sobre partidas e uma tabela com a classificação dos times de futebol.
+O TFC é um site informativo sobre partidas e uma tabela com a classificação dos times de futebol.
 
 ## O que foi desenvolvido
 
